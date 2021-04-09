@@ -13,11 +13,11 @@ include scripts/Makefile.include
 
 MAKEFLAGS += --no-print-directory
 
-CC 	  ?= clang
-AR 	  ?= ar
-LD 	  ?= ld
-AS 	  ?= nasm
-SHELL ?= sh
+CC 	  := clang
+AR 	  := ar
+LD 	  := ld.lld
+AS 	  := nasm
+SHELL := sh
 
 INCLUDE_DIR := -Iinclude
 
@@ -44,22 +44,22 @@ $(build-dirs):
 	@$(MAKE) $(build)=$@
 
 $(kernel-objs): $(build-dirs)
-	@
+	@# make assumes the recipe target hasn't changed if its body is empty
 
 $(kernel): $(kernel-objs) $(linker-script)
-	@cpp $(DEFINE_FLAGS) $(linker_script) | grep -v '^#' > $(kernel-file).ld
-	@${LD} ${BUILD_LDFLAGS}    \
-		  -T $(kernel-file).ld \
+	@cpp $(DEFINE_FLAGS) $(linker-script) | grep -v '^#' > $(kernel).ld
+	${LD} ${BUILD_LDFLAGS}    \
+		  -T $(kernel).ld \
 		  -o $@                \
 		  -n                   \
 		  --whole-archive      \
 		  $(kernel-objs)       \
 		  --no-whole-archive
 
-build: $(kernel-file)
+build: $(kernel)
 
 install: build
-	-cp $(kernel-file) $(installdir)
+	-cp $(kernel) $(installdir)
 	-sync $(installdir)
 
 clean:

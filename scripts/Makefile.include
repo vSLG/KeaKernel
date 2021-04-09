@@ -1,5 +1,5 @@
 ## Copyright (c) 2021 LabOS developers and contributors
 
-build := -f $(srctree)/scripts/Makefile.build.sub dir
+build := -f $(srctree)/scripts/Makefile.build dir
 real-prereqs = $(filter-out $(PHONY),$^)
 newer-prereqs = $(filter-out $(PHONY),$?)

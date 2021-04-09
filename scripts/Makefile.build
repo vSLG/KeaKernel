@@ -54,6 +54,8 @@ c_flags   = $(strip -MMD $(BUILD_CFLAGS) $(INCLUDE_DIR) $(cflags) $(DEFINE_FLAGS
 cxx_flags = $(strip -MMD $(BUILD_CXXFLAGS) $(INCLUDE_DIR) $(cxxflags) $(DEFINE_FLAGS))
 as_flags  = $(strip -MD  $(BUILD_ASFLAGS) $(asflags) $(DEFINE_FLAGS))
 
+builtin-target := $(objdir)/built-in.a
+
 # Include dependency makefiles for objects that generate them
 # .o -> .d
 -include $(patsubst %.o,%.d,$(filter %.o,$(obj-o)))
@@ -61,21 +63,18 @@ as_flags  = $(strip -MD  $(BUILD_ASFLAGS) $(asflags) $(DEFINE_FLAGS))
 -include $(addsuffix .d,$(filter %.o,$(obj-o)))
 
 $(objdir)/%.c.o: $(dir)/%.c
-	@$(CC) $(c_flags) -c -o $@ $<
+	$(CC) $(c_flags) -c -o $@ $<
 
 $(objdir)/%.cpp.o: $(dir)/%.cpp
-	@$(CXX) $(cxx_flags) -c -o $@ $<
+	$(CXX) $(cxx_flags) -c -o $@ $<
 
 $(objdir)/%.asm.o: $(dir)/%.asm
-	@$(AS) $(as_flags) -o $@ $(real-prereqs)
-
-$(res-o): $(res)
-	@$(call pretty-ld)
+	$(AS) $(as_flags) -o $@ $(real-prereqs)
 
 # Archive everything needed
 $(builtin-target): $(obj-o) $(res-o)
 	@rm -f $@
-	@$(AR) crsTD $@ $(real-prereqs)
+	$(AR) crsTD $@ $(real-prereqs)
 
 # Needed by $(builtin-target)
 $(objdir)/%/built-in.a: $(dir)/% ;
