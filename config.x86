@@ -1,0 +1,2 @@
+# System configuration
+CONFIG_X86_32 = n	# If = y, then build for x86_32

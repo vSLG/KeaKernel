@@ -1,0 +1,97 @@
+## Copyright (c) 2021 LabOS developers and contributors
+
+## This file builds targets.
+## Should be used with $(MAKE) $(build)=directory-to-build
+## else it is likely to fail.
+
+# Default rule
+PHONY := __build
+__build:
+
+# Initialize variables used by included files.
+# obj-o holds objects to be built, in relative path.
+obj-o    :=
+src      :=
+res      :=
+res-o    :=
+cflags   :=
+cxxflags :=
+subdir-o :=
+
+include scripts/Makefile.include
+include $(dir)/Makefile
+
+# Where objects will be stored.
+objdir := $(objtree)/$(dir)
+
+subdirs  := $(filter %/,$(src))
+srcfiles := $(filter-out %/,$(src))
+
+# Check if there is any "value/"
+subdir-o += $(patsubst %/,%,$(subdirs))
+subdir-o := $(sort $(subdir-o))
+
+# Append .o to source file names
+obj-o := $(addsuffix .o,$(srcfiles))
+# Transform any "value/" to "value/built-in.a"
+obj-o += $(patsubst %/,%/built-in.a,$(subdirs))
+
+# Point %.o targets to its respective obj directory
+obj-o := $(addprefix $(objdir)/,$(obj-o))
+
+res := $(addprefix $(dir)/,$(res))
+
+# Do not use $(objdir) here as this Makefile will descent into it
+# in the source tree, not object tree.
+subdir-o := $(addprefix $(dir)/,$(subdir-o))
+
+ifneq ($(res),)
+	res-o := $(objdir)/res.o
+endif
+
+# Final C flags to use with $(CC) command.
+c_flags   = $(strip -MMD $(BUILD_CFLAGS) $(INCLUDE_DIR) $(cflags) $(DEFINE_FLAGS))
+cxx_flags = $(strip -MMD $(BUILD_CXXFLAGS) $(INCLUDE_DIR) $(cxxflags) $(DEFINE_FLAGS))
+as_flags  = $(strip -MD  $(BUILD_ASFLAGS) $(asflags) $(DEFINE_FLAGS))
+
+# Include dependency makefiles for objects that generate them
+# .o -> .d
+-include $(patsubst %.o,%.d,$(filter %.o,$(obj-o)))
+# .o -> .o.d
+-include $(addsuffix .d,$(filter %.o,$(obj-o)))
+
+$(objdir)/%.c.o: $(dir)/%.c
+	@$(CC) $(c_flags) -c -o $@ $<
+
+$(objdir)/%.cpp.o: $(dir)/%.cpp
+	@$(CXX) $(cxx_flags) -c -o $@ $<
+
+$(objdir)/%.asm.o: $(dir)/%.asm
+	@$(AS) $(as_flags) -o $@ $(real-prereqs)
+
+$(res-o): $(res)
+	@$(call pretty-ld)
+
+# Archive everything needed
+$(builtin-target): $(obj-o) $(res-o)
+	@rm -f $@
+	@$(AR) crsTD $@ $(real-prereqs)
+
+# Needed by $(builtin-target)
+$(objdir)/%/built-in.a: $(dir)/% ;
+
+
+# Descend into other subdirectories
+PHONY += $(subdir-o)
+$(subdir-o):
+	@$(MAKE) $(build)=$@
+
+__build: $(builtin-target) $(subdir-o)
+	@:
+
+$(shell mkdir -p $(objdir))
+
+PHONY += FORCE
+FORCE:
+
+.PHONY: $(PHONY)

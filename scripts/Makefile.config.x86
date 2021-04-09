@@ -1,0 +1,30 @@
+## Copyright (c) 2021 LabOS developers and contributors
+
+## This files parses configuration for x86 arch
+
+include config.$(ARCH)
+
+USING_CLANG := $(filter y,$(USING_CLANG))
+
+BUILD_CFLAGS += -ffreestanding -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -fno-pic \
+				-mno-red-zone -fno-stack-protector
+
+
+ifeq ($(strip $(CONFIG_X86_32)),y)
+	BITS          := 32
+	UTS_MACHINE   := i386
+	DEFINE_FLAGS  += -D__i386__
+	BUILD_CFLAGS  += --target=i386-pc-none-elf -march=i386  # XXX: works only on clang
+	BUILD_ASFLAGS += -f elf32
+# $(CONFIG_X86_32),y
+else
+	BITS          := 64
+	UTS_MACHINE   := x86_64
+	DEFINE_FLAGS  += -D__x86_64__ -DCONFIG_X86_64
+	BUILD_CFLAGS  += -falign-jumps=1 -mcmodel=kernel
+	BUILD_ASFLAGS += -f elf64
+endif # $(CONFIG_X86_32),y
+
+export BITS UTS_MACHINE DEFINE_FLAGS
+
+BUILD_LDFLAGS += -m elf_$(UTS_MACHINE)
