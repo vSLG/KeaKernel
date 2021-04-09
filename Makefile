@@ -59,8 +59,8 @@ $(kernel): $(kernel-objs) $(linker-script)
 build: $(kernel)
 
 install: build
-	-cp $(kernel) $(installdir)
-	-sync $(installdir)
+	-cp $(kernel) $(instree)
+	-sync $(instree)
 
 clean:
 	-rm -rf $(objtree)
