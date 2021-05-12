@@ -1,4 +1,4 @@
-## Copyright (c) 2021 LabOS developers and contributors
+## Copyright (c) 2021 KeaOS/3 developers and contributors
 
 PHONY := __all
 __all:
@@ -34,7 +34,7 @@ export SHELL CC AR LD AS INCLUDE_DIR BUILD_CFLAGS BUILD_ASFLAGS BUILD_LDFLAGS
 include scripts/Makefile.config
 
 build-dirs    := src
-kernel        := $(objtree)/LabKernel
+kernel        := $(objtree)/KeaKernel
 linker-script := $(srctree)/src/arch/$(ARCH)/link_$(BITS).lds
 kernel-objs   := $(addsuffix /built-in.a,$(addprefix $(objtree)/,$(build-dirs)))
 
@@ -47,7 +47,7 @@ $(kernel-objs): $(build-dirs)
 	@# make assumes the recipe target hasn't changed if its body is empty
 
 $(kernel): $(kernel-objs) $(linker-script)
-	@cpp $(DEFINE_FLAGS) $(linker-script) | grep -v '^#' > $(kernel).ld
+	cpp $(DEFINE_FLAGS) $(INCLUDE_DIR) $(linker-script) | grep -v '^#' > $(kernel).ld
 	${LD} ${BUILD_LDFLAGS}    \
 		  -T $(kernel).ld \
 		  -o $@                \

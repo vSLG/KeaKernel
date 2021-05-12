@@ -1,7 +1,9 @@
-/* Copyright (c) 2021 LabOS developers and contributors */
+/* Copyright (c) 2021 KeaOS/3 developers and contributors */
 
-_KERNEL_BASE_ = 0x100000;
-_KERNEL_VMA   = 0xfffffff800000000;
+#include <linker.h>
+
+_KERNEL_PHYS = 0x100000;
+_KERNEL_VMA  = KERNEL_VMA;
 
 OUTPUT_ARCH(i386:x86-64)
 OUTPUT_FORMAT(elf64-x86-64)
@@ -9,14 +11,21 @@ OUTPUT_FORMAT(elf64-x86-64)
 ENTRY(_entry)
 
 SECTIONS {
-    . = _KERNEL_BASE_;
+    /* Bootstrap code, only ASM allowed */
 
-    .mb2 ALIGN(64) : {
+    . = _KERNEL_PHYS;
+
+    .boot ALIGN(64) : {
         *(.mb2)
+        *(.boot.text)
+        *(.boot.data)
     }
 
-    .mb2.text ALIGN(64) : {
-        *(.mb2.text)
+    .boot.bss ALIGN(64) : {
+        boot_stack_bottom = .;
+        . += 128;
+        boot_stack_top = .;
+        *(.boot.bss)
     }
 
     . += _KERNEL_VMA;

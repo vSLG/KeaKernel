@@ -1,4 +1,4 @@
-; Copyright (c) 2021 LabOS developers and contributors
+; Copyright (c) 2021 KeaOS/3 developers and contributors
 
 section .mb2
 
@@ -25,7 +25,7 @@ mb2_entry_tag:
     dw  3
     dw  0
     dd  .tag_end - mb2_entry_tag
-    dd  __entry
+    dd  _entry
 .tag_end:
 
 align 8
@@ -36,14 +36,3 @@ mb2_end_tag:
 .tag_end:
 
 mb2_end:
-
-section .mb2.text
-__entry:
-    cmp     eax, 0x36d76289 ; Check multiboot2 magic
-    je      _entry
-    mov     al, "0"         ; If not booted from mb2, show error
-    mov     dword [0xb8000], 0x4f524f45
-    mov     dword [0xb8004], 0x4f3a4f52
-    mov     dword [0xb8008], 0x4f204f20
-    mov     byte  [0xb800a], al
-    hlt

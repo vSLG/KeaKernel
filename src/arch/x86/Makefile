@@ -1,1 +1,1 @@
-src += boot/
+src += boot/ main.c
