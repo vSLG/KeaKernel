@@ -1,1 +1,1 @@
-src += arch/$(ARCH)/
+src += arch/$(ARCH)/ kea/

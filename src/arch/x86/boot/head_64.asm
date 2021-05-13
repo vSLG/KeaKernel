@@ -243,9 +243,6 @@ spin:
     jmp spin
 
 
-greeting:  db 'kk eae men',0
-greeting2: db 'a sam eh brabo',0
-
 no_cpuid_msg:     db 'cpuid instruction unsupported',0
 no_extended_msg:  db 'Extended mode unsupported by CPU',0
 no_long_mode_msg: db 'Long mode unsupported by CPU',0
@@ -318,12 +315,16 @@ _entry64:
     ; Pop multiboot2 info ptr and setup new stack
     pop     rax
     mov     rsp, kernel_stack
-    add     rsp, 1 << 12      ; Move to the top
+    add     rsp, 1 << 12      ; Move to the top, stack is 4 KiB
     push    rax               ; Push mb2 ptr into stack again
 
     ; Clear identity map
     mov     qword [pml4t], 0
     mov     qword [pdpt], 0
+
+    ; Flush TLB
+    mov     rax, cr3
+    mov     cr3, rax
 
     call    _centry
 .spin:

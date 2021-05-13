@@ -19,9 +19,7 @@ SECTIONS {
         *(.mb2)
         *(.boot.text)
         *(.boot.data)
-    }
-
-    .boot.bss ALIGN(64) : {
+        . = ALIGN(64);
         boot_stack_bottom = .;
         . += 128;
         boot_stack_top = .;
@@ -42,6 +40,9 @@ SECTIONS {
     .rodata ALIGN (4K) : AT (ADDR (.rodata) - _KERNEL_VMA) {
 		_rodata_start = .;
         *(.rodata)
+        *(.rodata.str1.1)
+        . = ALIGN(8);
+        *(.rodata.str1.8)
 		_rodata_end = .;
     }
 

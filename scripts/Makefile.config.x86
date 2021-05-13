@@ -21,7 +21,7 @@ else
 	BITS          := 64
 	UTS_MACHINE   := x86_64
 	DEFINE_FLAGS  += -D__x86_64__ -DCONFIG_X86_64
-	BUILD_CFLAGS  += -falign-jumps=1 -mcmodel=kernel
+	BUILD_CFLAGS  += -mcmodel=kernel
 	BUILD_ASFLAGS += -f elf64
 endif # $(CONFIG_X86_32),y
 

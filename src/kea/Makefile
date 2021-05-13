@@ -1,0 +1,1 @@
+src += kprintf.c stdlib.c string.c
