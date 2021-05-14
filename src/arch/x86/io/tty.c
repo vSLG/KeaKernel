@@ -22,11 +22,13 @@
 
 #define trace_tty(fmt, ...) kprintf("TTY: " fmt "\n", ##__VA_ARGS__)
 
-struct {
+typedef struct {
     serial_port_t enabled_ttys[4];
     uint8_t       tty_count;
     uint8_t       kprintf;
-} tty_info = {0};
+} tty_info_t;
+
+static tty_info_t tty_info = {0};
 
 uint8_t is_transmit_empty(uint16_t port) {
     return inb(port + 5) & 0x20;

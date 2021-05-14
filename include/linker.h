@@ -15,3 +15,4 @@
 #define PACKED     __attribute__((__packed__))
 #define SECTION(s) __attribute__((__section__(sec)))
 #define CALIGN(n)  __attribute__((__aligned__(n)))
+#define NORETURN   __attribute__((noreturn))

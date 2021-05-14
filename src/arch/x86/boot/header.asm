@@ -20,13 +20,13 @@ dd  MB2_ARCH
 dd  MB2_HEADERLEN
 dd  MB2_CHECKSUM
 
-align 8
-mb2_entry_tag:
-    dw  3
-    dw  0
-    dd  .tag_end - mb2_entry_tag
-    dd  _entry
-.tag_end:
+;align 8
+;mb2_entry_tag:
+;    dw  3
+;    dw  0
+;    dd  .tag_end - mb2_entry_tag
+;    dd  _entry
+;.tag_end:
 
 align 8
 mb2_end_tag:

@@ -33,3 +33,10 @@ char toupper(char character) {
         return character - 0x20;
     return character;
 }
+
+void strcpy(char *dest, const char *src, size_t max_len) {
+    size_t src_size = strlen(src);
+    size_t len      = src_size < max_len ? src_size : max_len - 1;
+    memcpy(dest, src, len);
+    dest[len] = '\0';
+}

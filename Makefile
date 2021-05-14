@@ -21,7 +21,7 @@ SHELL := sh
 
 INCLUDE_DIR := -Iinclude
 
-BUILD_CFLAGS := $(strip -O1 					   \
+BUILD_CFLAGS := $(strip -O0 					   \
 						-g  					   \
 						-Wall -Wno-unused-function \
 						${DEBUG}				   \

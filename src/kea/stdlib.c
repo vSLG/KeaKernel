@@ -13,7 +13,7 @@
 
 #include <kea/stdlib.h>
 
-char *itoa(int num, char *buf, int base) {
+char *itoa(long num, char *buf, int base) {
     uint8_t neg   = 0;
     char *  start = buf;
 
@@ -30,7 +30,7 @@ char *itoa(int num, char *buf, int base) {
         num = -num;
     }
 
-    uint32_t unum = num;
+    uint64_t unum = num;
     while (unum > 0) {
         *buf++ = "0123456789abcdef"[unum % base];
         unum   = unum / base;

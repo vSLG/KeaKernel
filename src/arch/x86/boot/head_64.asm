@@ -35,8 +35,15 @@ _entry:
     cmp     edi, 0x36d76289  ; Check multiboot2 magic
     jne     .err
 
-    push    0
-    push    esi  ; Save info pointer for calling C function later
+    ;push    dword 16
+    ;push    esi
+    ;call    _itoa
+    ;add     esp, 8
+    ;mov     esi, itoa_buf
+    ;call    vga_println
+
+    push    dword 0
+    push    dword esi  ; Save info pointer for calling C function later
 
     call    common_init
 
@@ -238,20 +245,96 @@ vga_print_char:
     ret
 
 
+; void _itoa(int num, uint8_t base);
+_itoa:
+    push    ebp
+    mov     ebp, esp
+    push    ebx
+
+    mov     esi, [ebp + 8]  ; Number
+    mov     edi, [ebp + 12] ; Base
+    mov     ecx, itoa_buf
+    xor     edx, edx
+    dec     edi
+    and     edi, 0xF
+    inc     edi
+
+    test    esi, esi
+    jnz     .cont
+
+    mov     byte [ecx], '0'
+    mov     byte [ecx], 0
+    jmp     .end
+
+.cont:
+    mov     byte [ecx], 0 ; null-terminated string
+    inc     ecx
+
+    ; esi < 0 && edi == 10
+    cmp     edi, 10
+    jne     .cont2
+    test    esi, esi
+    jns     .cont2
+
+    neg     esi
+    inc     edx
+.cont2:
+    push    edx ; Signal, 0 if positive or 1 if negative
+.loop:
+    xor     edx, edx
+    mov     eax, esi
+    div     edi
+
+    mov     esi, eax
+    mov     bl, byte [itoa_chars + edx]
+    mov     byte [ecx], bl
+    inc     ecx
+
+    test    esi, esi
+    ja      .loop
+
+    pop     edx ; Signal
+    test    edx, edx
+    jz      .reverse
+
+    mov     byte [ecx], '-'
+    inc     ecx
+.reverse:
+    mov     edx, itoa_buf
+.loop2:
+    dec     ecx
+    mov     bl, byte [ecx]
+    mov     bh, byte [edx]
+    mov     byte [ecx], bh
+    mov     byte [edx], bl
+    inc     edx
+
+    cmp     edx, ecx
+    jb      .loop2
+
+.end:
+    pop     ebx
+    mov     esp, ebp
+    pop     ebp
+    ret
+
+
 spin:
     hlt
     jmp spin
 
+
+section .boot.data
 
 no_cpuid_msg:     db 'cpuid instruction unsupported',0
 no_extended_msg:  db 'Extended mode unsupported by CPU',0
 no_long_mode_msg: db 'Long mode unsupported by CPU',0
 no_mb2_msg:       db 'Error: not using multiboot2 protocol',0
 
-
-section .boot.data
-
 vga_pos: dd 0
+
+itoa_chars: db '0123456789abcdef'
+itoa_buf:   db 'this is a test test testtt',0
 
 _gdt64:                ; Global Descriptor Table (64-bit).
 .null:  equ $ - _gdt64 ; The null descriptor.
@@ -312,11 +395,10 @@ _entry64:
     mov     gs, ax
     mov     ss, ax
 
-    ; Pop multiboot2 info ptr and setup new stack
-    pop     rax
+    ; Setup new stack
+    pop     rdi
     mov     rsp, kernel_stack
     add     rsp, 1 << 12      ; Move to the top, stack is 4 KiB
-    push    rax               ; Push mb2 ptr into stack again
 
     ; Clear identity map
     mov     qword [pml4t], 0
@@ -326,7 +408,8 @@ _entry64:
     mov     rax, cr3
     mov     cr3, rax
 
-    call    _centry
+    push    rdi
+    call     _centry
 .spin:
     hlt
     jmp     .spin

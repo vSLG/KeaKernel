@@ -28,3 +28,11 @@ size_t strlen(const char *buf);
  * @return char
  */
 char toupper(char character);
+
+/**
+ * @brief Copy null-terminated string to dest
+ *
+ * @param *dest Destination
+ * @param *src Source
+ */
+void strcpy(char *dest, const char *src, size_t max_len);

@@ -17,14 +17,15 @@
 #include <kea/stdlib.h>
 #include <kea/string.h>
 
-static struct {
+typedef struct {
     kputchar_handler_t handlers[4];
     int                n_handlers;
     kprintf_state_t    state;
-} kp_info = {0};
+} kp_info_t;
 
-static char formats_l[] = "xdspcXpoib%";
-static char flags_l[]   = "0-+ #";
+static kp_info_t kp_info     = {0};
+static char      formats_l[] = "xdspcXpoib%";
+static char      flags_l[]   = "0-+ #";
 
 static void kputchar(char chr);
 
@@ -154,7 +155,7 @@ void kprintf(const char *format, ...) {
                 case 'o':
                 case 'p':
                 case 'b':
-                    str = itoa(va_arg(ap, uint32_t), &buf[3], base);
+                    str = itoa(va_arg(ap, uint64_t), &buf[3], base);
                     break;
                 case 's':
                     str = va_arg(ap, char *);

@@ -19,4 +19,4 @@
  * @param base base of num
  * @return char* buf
  */
-char *itoa(int num, char *buf, int base);
+char *itoa(long num, char *buf, int base);
