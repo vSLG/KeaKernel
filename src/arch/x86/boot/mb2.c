@@ -21,6 +21,18 @@
  * Private definitions
  */
 
+void parse_mmap(mb2_tag_mmap_t *tag, boot_info_t *boot_info) {
+    mb2_mmap_entry_t *map = tag->entries;
+    boot_info->mmap_count = 0;
+
+    while ((void *) map < (void *) tag + tag->tag.size) {
+        boot_info->mmaps[boot_info->mmap_count].type    = map->type;
+        boot_info->mmaps[boot_info->mmap_count].len     = map->len;
+        boot_info->mmaps[boot_info->mmap_count++].start = map->addr;
+        map = (void *) map + tag->entry_size;
+    }
+}
+
 /**
  * Public definitions
  */
@@ -46,6 +58,9 @@ void init_mb2(void *mbi, boot_info_t *boot_info) {
                 strcpy(boot_info->cmdline,
                        ((mb2_tag_str_t *) tag)->str,
                        CMDLINE_LEN);
+                break;
+            case MB2_TAG_MMU:
+                parse_mmap((mb2_tag_mmap_t *) tag, boot_info);
                 break;
             default:
                 break;

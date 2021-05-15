@@ -35,15 +35,17 @@ _entry:
     cmp     edi, 0x36d76289  ; Check multiboot2 magic
     jne     .err
 
-    ;push    dword 16
-    ;push    esi
-    ;call    _itoa
-    ;add     esp, 8
-    ;mov     esi, itoa_buf
-    ;call    vga_println
-
     push    dword 0
     push    dword esi  ; Save info pointer for calling C function later
+
+    push    dword 16   ; Base
+    push    esi        ; Num
+    call    _itoa
+    add     esp, 8 ; Forget about pushed parameters
+    mov     esi, mbi_msg
+    call    vga_print
+    mov     esi, itoa_buf
+    call    vga_println
 
     call    common_init
 
@@ -263,6 +265,7 @@ _itoa:
     jnz     .cont
 
     mov     byte [ecx], '0'
+    inc     ecx
     mov     byte [ecx], 0
     jmp     .end
 
@@ -311,7 +314,6 @@ _itoa:
 
     cmp     edx, ecx
     jb      .loop2
-
 .end:
     pop     ebx
     mov     esp, ebp
@@ -331,10 +333,12 @@ no_extended_msg:  db 'Extended mode unsupported by CPU',0
 no_long_mode_msg: db 'Long mode unsupported by CPU',0
 no_mb2_msg:       db 'Error: not using multiboot2 protocol',0
 
+mbi_msg: db 'mbi pointer: 0x',0
+
 vga_pos: dd 0
 
 itoa_chars: db '0123456789abcdef'
-itoa_buf:   db 'this is a test test testtt',0
+itoa_buf:   times 65 db 0
 
 _gdt64:                ; Global Descriptor Table (64-bit).
 .null:  equ $ - _gdt64 ; The null descriptor.

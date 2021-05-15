@@ -1,1 +1,1 @@
-src += boot/ io/ main.c mb2.c
+src += boot/ io/ cpu/
