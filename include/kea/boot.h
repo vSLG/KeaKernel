@@ -11,12 +11,14 @@
 
 #pragma once
 
-#include <kea/mem.h>
 #include <stdint.h>
+
+#include <kea/mem.h>
+#include <kea/plat.h>
 
 #define BOOTLOADER_NAME_LEN 64
 #define CMDLINE_LEN         256
-#define MAX_MMAPS           16
+#define MAX_MMAPS           32
 
 /**
  * @struct boot_info
@@ -30,4 +32,6 @@ typedef struct boot_info {
 
     memory_block_t mmaps[MAX_MMAPS]; ///< Available physical memory maps
     uint8_t        mmap_count;
+
+    plat_t plat; ///< Platform specific properties
 } boot_info_t;

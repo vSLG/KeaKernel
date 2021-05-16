@@ -1,1 +1,1 @@
-src += head_$(BITS).asm header.asm setup.c mb2.c
+src += head_$(BITS).asm header.asm mb2.c

@@ -130,12 +130,14 @@ void idt_set_gate(uint8_t int_no, uint64_t base, uint8_t flags, uint8_t ist) {
  * Public declarations
  */
 
-void init_idt() {
+void init_idt(plat_t *plat) {
     memset(&idt_entries, 0, sizeof(idt_entry_t) * IDT_ENTRIES);
 
     for (int i = 0; i < 48; i++)
         idt_set_gate(i, (uint64_t) interrupt_array[i], INT_GATE, 0);
 
     idt_flush((uint64_t) &idt_ptr);
-    sti();
+
+    plat->enable_int  = sti;
+    plat->disable_int = cli;
 }

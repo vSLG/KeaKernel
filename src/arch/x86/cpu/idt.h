@@ -13,6 +13,7 @@
 
 #include <stdint.h>
 
+#include <kea/plat.h>
 #include <linker.h>
 
 #define IDT_ENTRIES 256
@@ -83,8 +84,9 @@ typedef struct regs {
 /**
  * @brief Load and use our IDT
  *
+ * @param *plat Platform information to be filled
  */
-void init_idt();
+void init_idt(plat_t *plat);
 
 /**
  * @brief Tells CPU to use new IDT

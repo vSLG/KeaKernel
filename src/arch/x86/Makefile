@@ -1,1 +1,1 @@
-src += boot/ io/ cpu/
+src += boot/ io/ cpu/ setup.c
