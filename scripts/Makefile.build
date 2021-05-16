@@ -63,18 +63,22 @@ builtin-target := $(objdir)/built-in.a
 -include $(addsuffix .d,$(filter %.o,$(obj-o)))
 
 $(objdir)/%.c.o: $(dir)/%.c
-	$(CC) $(c_flags) -c -o $@ $<
+	@echo "  CC  $<"
+	@$(CC) $(c_flags) -c -o $@ $<
 
 $(objdir)/%.cpp.o: $(dir)/%.cpp
-	$(CXX) $(cxx_flags) -c -o $@ $<
+	@echo "  CXX $<"
+	@$(CXX) $(cxx_flags) -c -o $@ $<
 
 $(objdir)/%.asm.o: $(dir)/%.asm
-	$(AS) $(as_flags) -o $@ $(real-prereqs)
+	@echo "  AS  $<"
+	@$(AS) $(as_flags) -o $@ $(real-prereqs)
 
 # Archive everything needed
 $(builtin-target): $(obj-o) $(res-o)
+	@echo "  AR  $@"
 	@rm -f $@
-	$(AR) crsTD $@ $(real-prereqs)
+	@$(AR) crsTD $@ $(real-prereqs)
 
 # Needed by $(builtin-target)
 $(objdir)/%/built-in.a: $(dir)/% ;
