@@ -22,12 +22,14 @@ static gdt64_t gdt = {
     .entries = {0},
     .tss =
         {
-            .entry.limit_low  = sizeof(tss_t),
-            .entry.limit_high = 0,
-            .entry.access     = 0b10001001,
-            .entry.flags      = 0,
-            .reserved         = 0,
-
+            .entry =
+                {
+                    .limit_low  = sizeof(tss_t),
+                    .limit_high = 0,
+                    .access     = 0b10001001,
+                    .flags      = 0,
+                },
+            .reserved = 0,
         },
 };
 static descriptor_ptr_t gdt_ptr = {

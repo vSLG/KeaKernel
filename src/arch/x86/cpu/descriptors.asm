@@ -3,6 +3,7 @@
 [bits 64]
 
 global gdt_flush
+global idt_flush
 
 gdt_flush:
     cli
@@ -35,4 +36,8 @@ gdt_flush:
     mov     ax, 0x28  ; Offset to TSS
     ltr     ax
 
+    ret
+
+idt_flush:
+    lidt    [rdi]
     ret

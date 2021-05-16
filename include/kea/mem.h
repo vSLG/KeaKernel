@@ -11,6 +11,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include <stdint.h>
 
 /**
@@ -36,3 +37,5 @@ typedef struct memory_block {
     uint64_t      len;   ///< Lenght of the block
     memory_type_t type;  ///< Type of memory, as described in above enum
 } memory_block_t;
+
+void memset(void *addr, uint8_t val, size_t len);

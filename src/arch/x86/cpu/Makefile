@@ -1,1 +1,1 @@
-src += gdt.c descriptors.asm
+src += idt.c gdt.c descriptors.asm interrupts.asm
