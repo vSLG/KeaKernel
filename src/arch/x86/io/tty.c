@@ -11,7 +11,7 @@
 
 #include <stdint.h>
 
-#include <kea/kprintf.h>
+#include <kprintf.h>
 
 #include "io.h"
 #include "tty.h"

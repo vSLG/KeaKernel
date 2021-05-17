@@ -1,1 +1,1 @@
-src += arch/$(ARCH)/ kea/
+src += arch/$(ARCH)/ kea/ kprintf.c

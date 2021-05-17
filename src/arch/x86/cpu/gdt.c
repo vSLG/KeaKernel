@@ -15,7 +15,6 @@
 
 #include "gdt.h"
 #include "descriptors.h"
-#include <stdint.h>
 
 static tss_t   tss = {0};
 static gdt64_t gdt = {

@@ -13,9 +13,9 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include <kea/kprintf.h>
 #include <kea/stdlib.h>
 #include <kea/string.h>
+#include <kprintf.h>
 
 typedef struct {
     kputchar_handler_t handlers[4];

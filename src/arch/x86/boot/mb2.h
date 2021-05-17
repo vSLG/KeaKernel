@@ -13,7 +13,7 @@
 
 #include <stdint.h>
 
-#include <kea/boot.h>
+#include <boot.h>
 #include <kea/mem.h>
 #include <linker.h>
 

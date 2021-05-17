@@ -13,8 +13,8 @@
 
 #include <stdint.h>
 
-#include <kea/plat.h>
 #include <linker.h>
+#include <plat.h>
 
 #define IDT_ENTRIES 256
 #define IDT_USER    0b01100000

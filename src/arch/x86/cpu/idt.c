@@ -9,8 +9,8 @@
  *
  */
 
-#include <kea/kprintf.h>
 #include <kea/mem.h>
+#include <kprintf.h>
 
 #include "descriptors.h"
 #include "idt.h"

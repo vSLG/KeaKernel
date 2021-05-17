@@ -9,9 +9,8 @@
  *
  */
 
-#include <kea/boot.h>
-#include <kea/kprintf.h>
 #include <kea/string.h>
+#include <kprintf.h>
 
 #include "mb2.h"
 

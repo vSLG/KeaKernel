@@ -1,1 +1,1 @@
-src += kprintf.c stdlib.c string.c mem.c
+src += stdlib.c string.c mem.c

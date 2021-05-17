@@ -14,7 +14,7 @@
 #include <stdint.h>
 
 #include <kea/mem.h>
-#include <kea/plat.h>
+#include <plat.h>
 
 #define BOOTLOADER_NAME_LEN 64
 #define CMDLINE_LEN         256

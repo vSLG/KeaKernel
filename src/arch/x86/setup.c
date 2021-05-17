@@ -11,8 +11,8 @@
 
 #include <stdint.h>
 
-#include <kea/boot.h>
-#include <kea/kprintf.h>
+#include <boot.h>
+#include <kprintf.h>
 #include <linker.h>
 
 #include "boot/mb2.h"
