@@ -13,13 +13,10 @@
 
 #include <stdint.h>
 
-#include <kea/mem.h>
+#include <memory.h>
 
-typedef uint8_t (*plat_vmap_t)(void *         address_space,
-                               memory_block_t phys_block,
-                               uintptr_t      vaddr,
-                               uint8_t        flags);
-
+typedef size_t (*plat_total_mem_t)();
+typedef size_t (*plat_used_mem_t)();
 typedef void (*plat_enable_int_t)();
 typedef void (*plat_disable_int_t)();
 
@@ -29,8 +26,11 @@ typedef void (*plat_disable_int_t)();
  * @brief Platfom specific properties and methods
  */
 typedef struct plat {
-    char *            arch; ///< Arch name
-    plat_vmap_t       vmap; ///< Method to map physical memory to virtual memory
-    plat_enable_int_t enable_int;   ///< Method to enable interrupts
+    char *arch; ///< Arch name
+
+    plat_enable_int_t  enable_int;  ///< Method to enable interrupts
     plat_disable_int_t disable_int; ///< Method to disable interrupts
+
+    plat_used_mem_t  used_mem;  ///< Used physical memory (raw)
+    plat_total_mem_t total_mem; ///< Total physical memory available
 } plat_t;

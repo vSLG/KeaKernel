@@ -9,7 +9,7 @@
  *
  */
 
-#include <kea/mem.h>
+#include <kea/memory.h>
 
 /**
  * Public definitions

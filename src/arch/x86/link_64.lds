@@ -29,6 +29,7 @@ SECTIONS {
     . += _KERNEL_VMA;
 
     /* Add a symbol that indicates the start address of the kernel. */
+    . = ALIGN(4K);
     _kernel_start = .;
 
     .text ALIGN (4K) : AT (ADDR (.text) - _KERNEL_VMA) {

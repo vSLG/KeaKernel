@@ -21,6 +21,9 @@
 #include "io/pic.h"
 #include "io/tty.h"
 
+#include "phys_mem.h"
+#include "virt_mem.h"
+
 CALIGN(64)
 uint8_t kernel_stack[1 << 12];
 
@@ -36,17 +39,22 @@ NORETURN void _centry(void *mb2_ptr) {
     init_gdt();
     init_pic();
     init_idt(&boot_info.plat);
+    init_phys_mem(&boot_info);
+    init_virt_mem(&boot_info);
 
     for (int i = 0; i < boot_info.mmap_count; i++)
-        kprintf("RAM: %#lx-%#lx type %d\n",
+        kprintf("RAM: 0x%016lx-0x%016lx type %d\n",
                 boot_info.mmaps[i].start,
-                boot_info.mmaps[i].start + boot_info.mmaps[i].len,
+                boot_info.mmaps[i].start + boot_info.mmaps[i].len - 1,
                 boot_info.mmaps[i].type);
 
     boot_info.plat.arch = "x86_64";
 
+    kprintf("Total physical mem: %ld\n", boot_info.plat.total_mem());
+    kprintf("Used physical mem: %ld\n", boot_info.plat.used_mem());
+
     // Print OKAY to screen
-    *((uint64_t *) (0xb8000 + KERNEL_VMA + 160)) = 0x2f592f412f4b2f4f;
+    //*((uint64_t *) (0xb8000 + KERNEL_VMA + 160)) = 0x2f592f412f4b2f4f;
 
     while (1)
         __asm__("hlt");

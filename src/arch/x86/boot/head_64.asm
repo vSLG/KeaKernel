@@ -405,14 +405,13 @@ _entry64:
     add     rsp, 1 << 12      ; Move to the top, stack is 4 KiB
 
     ; Clear identity map
-    mov     qword [pml4t], 0
-    mov     qword [pdpt], 0
+    ;mov     qword [pml4t], 0
+    ;mov     qword [pdpt], 0
 
     ; Flush TLB
-    mov     rax, cr3
-    mov     cr3, rax
+    ;mov     rax, cr3
+    ;mov     cr3, rax
 
-    push    rdi
     call     _centry
 .spin:
     hlt

@@ -13,7 +13,7 @@
 
 #include <stdint.h>
 
-#include <kea/mem.h>
+#include <memory.h>
 #include <plat.h>
 
 #define BOOTLOADER_NAME_LEN 64

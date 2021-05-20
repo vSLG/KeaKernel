@@ -9,7 +9,7 @@
  *
  */
 
-#include <kea/mem.h>
+#include <kea/memory.h>
 #include <kprintf.h>
 
 #include "descriptors.h"

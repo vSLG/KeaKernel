@@ -14,8 +14,8 @@
 #include <stdint.h>
 
 #include <boot.h>
-#include <kea/mem.h>
 #include <linker.h>
+#include <memory.h>
 
 typedef enum mb2_tag_type {
     MB2_TAG_END             = 0,
