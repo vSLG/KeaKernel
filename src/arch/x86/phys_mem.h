@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 /**
  * @file phys_mem.h
  * @author vslg (slgf@protonmail.ch)

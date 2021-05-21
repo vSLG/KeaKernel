@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 /**
  * @file virt_mem.c
  * @author vslg (slgf@protonmail.ch)

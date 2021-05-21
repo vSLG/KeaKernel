@@ -1,4 +1,5 @@
 ; Copyright (c) 2021 KeaOS/3 developers and contributors
+; SPDX-License-Identifier: GPL-3.0-or-later
 
 [bits 64]
 

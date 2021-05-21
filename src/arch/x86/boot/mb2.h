@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 /**
  * @file mb2.h
  * @author vslg (slgf@protonmail.ch)

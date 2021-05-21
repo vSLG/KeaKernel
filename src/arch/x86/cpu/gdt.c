@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+
 /**
  * @file gdt.c
  * @author vslg (slgf@protonmail.ch)

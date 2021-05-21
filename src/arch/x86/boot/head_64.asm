@@ -1,4 +1,5 @@
 ; Copyright (c) 2021 KeaOS/3 developers and contributors
+; SPDX-License-Identifier: GPL-3.0-or-later
 
 ; Entry code, we start from 32 bits without paging
 [bits 32]

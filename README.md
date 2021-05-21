@@ -17,4 +17,3 @@ A hobbyist microkernel development. Based and inspired by previous attempts on [
 - Scheduling and tasking
 - Userspace servers
 - Drivers (disk, screen, etc)
-- License
