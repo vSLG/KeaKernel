@@ -1,6 +1,6 @@
 # KeaKernel - KeaOS/3
 
-A hobbyist microkernel development.
+A hobbyist microkernel development. Based and inspired by previous attempts on [KeaOS/2](https://gitlab.com/iagocq/keaos-2).
 
 ## What we have up to date
 
@@ -17,3 +17,4 @@ A hobbyist microkernel development.
 - Scheduling and tasking
 - Userspace servers
 - Drivers (disk, screen, etc)
+- License
